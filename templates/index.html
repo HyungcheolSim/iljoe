@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
+
+    <title>일조</title>
+
+    <style>
+        * {
+            font-family: "Gowun Batang", serif;
+            color: white;
+        }
+
+        body {
+            background-image: linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.5),
+                    rgba(0, 0, 0, 0.5)),
+                url("https://cdn.aitimes.com/news/photo/202010/132592_129694_3139.jpg");
+            background-position: center;
+            background-size: cover;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
+
+        .order {
+            width: 500px;
+            margin: 60px auto 0px auto;
+            padding-bottom: 60px;
+        }
+
+        .mybtn {
+            width: 100%;
+        }
+
+        .order>table {
+            margin: 40px 0;
+            font-size: 18px;
+        }
+
+        option {
+            color: black;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            show_order();
+        });
+        function show_order() {
+            fetch('/member').then((res) => res.json()).then((data) => {
+                let rows = data['result']
+                $('#profile').empty()
+                rows.forEach((a) => {
+                    let name = a['name']
+                    let blog = a['blog']
+                    let mbti = a['mbti']
+                    let id = a['_id']
+
+                    let temp_html = `<div class="profile">
+                                        <div><a href="/view/${id}">이름 : ${name}</a></h5></div>
+                                        <div> 블로그 주소 : ${blog}</div>
+                                        <div> MBTI : ${mbti}</div>
+                                    </div>`
+                    $('#profile').append(temp_html)
+                })
+            })
+        }
+        function save_order() {
+            let name = $('#name').val()
+            let blog = $('#blog').val()
+            let mbti = $('#mbti').val()
+
+            let formData = new FormData();
+            formData.append("name_give", name)
+            formData.append("blog_give", blog)
+            formData.append("mbti_give", mbti)
+
+            fetch('/member', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                alert(data["msg"]);
+                window.location.reload()
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="mask"></div>
+    <div class="order">
+        <h1>일조</h1>
+        <div class="order-info">
+            <div class="input-group mb-3">
+                <span class="input-group-text">이름</span>
+                <input id="name" type="text" class="form-control" />
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">블로그 주소</span>
+                <input id="blog" type="text" class="form-control" />
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="size">MBTI</label>
+                <input id="mbti" type="text" class="form-control" />
+            </div>
+            <button onclick="save_order()" type="button" class="btn btn-warning mybtn">
+                저장하기
+            </button>
+        </div>
+        <div id="profile">
+            <div class="profile">
+                <div id="name">김갑돌</div>
+                <div id="mbti">ENFJ</div>
+                <div id="blog">https://spartacodingclub.kr/</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
