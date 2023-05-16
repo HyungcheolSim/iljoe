@@ -1,62 +1,73 @@
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
-import requests
-from bs4 import BeautifulSoup
+from bson.objectid import ObjectId
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://sparta:test@cluster0.chtiogv.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbProject
+client = MongoClient('mongodb+srv://sparta:test@cluster0.32ylit8.mongodb.net/?retryWrites=true&w=majority')
+db = client.dbsparta
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route("/movie", methods=["POST"])
-def movie_post():
-    url_receive = request.form['url_give']
-    comment_receive = request.form['comment_give']
-
-    headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-    data = requests.get(url_receive,headers=headers)
-
-    soup = BeautifulSoup(data.text, 'html.parser')
-
-    ogtitle = soup.select_one('meta[property="og:title"]')['content']
-    ogimage = soup.select_one('meta[property="og:image"]')['content']
-    ogdesc = soup.select_one('meta[property="og:description"]')['content']
+@app.route("/member", methods=["POST"])
+def list_post():
+    mbti_receive = request.form['mbti_give']
+    merit_receive = request.form['merit_give']
+    blog_receive = request.form['blog_give']
+    desc_receive = request.form['desc_give']
 
     doc = {
-        'title':ogtitle,
-        'desc':ogdesc,
-        'image':ogimage,
-        'comment':comment_receive
+        'blog':blog_receive,
+        'mbti':mbti_receive,
+        'merit':merit_receive,
+        'desc':desc_receive
     }
 
-    db.sparta2.insert_one(doc)
+    db.members.insert_one(doc)
+    print(blog_receive, mbti_receive, merit_receive, desc_receive)
 
-    return jsonify({'msg':'저장 완료!'})
+@app.route("/api/member", methods=["POST"])
+def member_post():
+    index_receive = request.form['index_give']
+    name_receive = request.form['name_give']
+    profile_receive = request.form['profile_give']
 
-@app.route("/movie", methods=["GET"])
-def movie_get():
-    all_movies = list(db.sparta2.find({},{'_id':False}))
-    return jsonify({'msg':'GET 연결 완료!'})
+    doc = {
+        'index':index_receive,
+        'name':name_receive,
+        'profile':profile_receive
+    }
 
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    db.lists.insert_one(doc)
+    print(index_receive, name_receive, profile_receive)
+
+    return jsonify({'msg':'저장완료!'})
+
+@app.route("/member", methods=["GET"])
+def member_get():
+    all_members = list(db.members.find({}))
+    for member in all_members:
         member['_id'] = str(member['_id'])
     return jsonify({'result':all_members})
 
 @app.route("/view/<id>", methods=["GET"])
 def one_find_member(id):
-
     find_member = db.members.find_one({"_id": ObjectId(id)})
     find_member['_id'] = str(find_member['_id'])
     find_id = db.members.find_one({'_id' : ObjectId(id)},{'id':True})
     return render_template('view.html', member=find_member, member_id=find_id)
 
+@app.route("/api/member", methods=["GET"])
+def listing_get():
+    all_lists = list(db.lists.find({},{'_id':False}))
+    return jsonify({'msg':'전송완료'})
+
+
+
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5001, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)
 
 
 
