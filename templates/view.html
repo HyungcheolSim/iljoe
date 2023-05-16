@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +12,6 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <style>
-        
     </style>
     <title>{{ member['name'] }}</title>
 </head>
@@ -27,7 +25,7 @@
                         <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 mb-4 mb-lg-0">
-                                    <img src="{{ member['img'] }}" alt="...">
+                                    <img src="{{ member['img'] }}" alt="..." style="max-width: 500px; height: auto;">
                                 </div>
                                 <div class="col-lg-6 px-xl-10">
                                     <div class="bg-secondary d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
@@ -41,8 +39,8 @@
                                                 class="display-26 text-secondary me-2 font-weight-600">BLOG : </span> {{
                                             member['blog'] }} </li>
                                         <li class="mb-2 mb-xl-3 display-28"><span
-                                                class="display-26 text-secondary me-2 font-weight-600">Email : </span>
-                                            edith@mail.com</li>
+                                                class="display-26 text-secondary me-2 font-weight-600">장점 : </span> {{
+                                            member['merit'] }}</li>
                                     </ul>
                                 </div>
                             </div>

@@ -18,13 +18,15 @@ def member_post():
     mbti_receive = request.form['mbti_give']
     img_receive = request.form['img_give']
     desc_receive = request.form['desc_give']
+    merit_receive = request.form['merit_give']
 
     doc = {
         'name':name_receive,
         'blog':blog_receive,
         'mbti':mbti_receive,
         'img':img_receive,
-        'desc':desc_receive
+        'desc':desc_receive,
+        'merit':merit_receive
     }
     db.members.insert_one(doc)
 
@@ -61,6 +63,7 @@ def update_post(id):
     mbti_receive = request.form['mbti_give']
     img_receive = request.form['img_give']
     desc_receive = request.form['desc_give']
+    merit_receive = request.form['merit_give']
 
     find_member = db.members.find_one({"_id": ObjectId(id)})
     find_member['_id'] = str(find_member['_id'])
@@ -70,6 +73,7 @@ def update_post(id):
     db.members.update_one({'_id': ObjectId(id)},{'$set':{'mbti':mbti_receive}})
     db.members.update_one({'_id': ObjectId(id)},{'$set':{'img':img_receive}})
     db.members.update_one({'_id': ObjectId(id)},{'$set':{'desc':desc_receive}})
+    db.members.update_one({'_id': ObjectId(id)},{'$set':{'merit':merit_receive}})
 
     return redirect('/view/'+id)
    

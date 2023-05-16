@@ -34,7 +34,7 @@
             justify-content: center;
         }
 
-        .profile {
+        .img {
             height: 800px;
             width: 86%;
             margin: 10px 8% 20px 8%;
@@ -132,10 +132,10 @@
                 rows.forEach((a) => {
                     let index = a['_id']
                     let name = a['name']
-                    let profile = a['profile']
+                    let img = a['img']
 
                     let temp_html = `
-                                    <div class="circle-img" onclick="globalThis.location.assign('/view/${index}')" style="background-image:url(${profile});">
+                                    <div class="circle-img" onclick="globalThis.location.assign('/view/${index}')" style="background-image:url(${img});">
                                         <h1 class="name"><span id="name">${name}</span></h1>
                                     </div>
                                     `
@@ -149,7 +149,7 @@
             let name = $('#name').val()
             let mbti = $('#mbti').val()
             let merit = $('#merit').val()
-            let profile = $('#profile').val()
+            let img = $('#img').val()
             let blog = $('#blog').val()
             let desc = $('#desc').val()
 
@@ -158,7 +158,7 @@
             formData.append("name_give", name)
             formData.append("mbti_give", mbti)
             formData.append("merit_give", merit)
-            formData.append("profile_give", profile)
+            formData.append("img_give", img)
             formData.append("blog_give", blog)
             formData.append("desc_give", desc)
 
@@ -198,7 +198,7 @@
             <label>장점</label>
         </div>
         <div class="form-floating mb-3">
-            <input id="profile" type="url" class="form-control" placeholder="....jpg">
+            <input id="img" type="url" class="form-control" placeholder="....jpg">
             <label>프로필 이미지(URL)</label>
         </div>
         <div class="form-floating mb-3">
@@ -214,8 +214,8 @@
             <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
         </div>
     </div>
-    <div class="profile">
-        <div class="profile_list" id="cards-box">
+    <div class="img">
+        <div class="img_list" id="cards-box">
             <div class="circle-img" onclick="selecting(100)"
                 style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">홍길동</span></h1>
