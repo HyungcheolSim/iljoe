@@ -35,7 +35,6 @@ def movie_post():
 
     db.sparta2.insert_one(doc)
 
-
     return jsonify({'msg':'저장 완료!'})
 
 @app.route("/movie", methods=["GET"])
