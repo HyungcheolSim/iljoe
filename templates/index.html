@@ -59,7 +59,7 @@
             margin: 0 auto;
             display: inline-block;
             margin-top: 45%;
-            color: aliceblue;
+            color: yellowgreen;
             opacity: 60%;
         }
 
@@ -124,7 +124,7 @@
         });
 
         function listing() {
-            fetch('/api/member').then(res => res.json()).then(data => {
+            fetch('/member').then(res => res.json()).then(data => {
                 let rows = data['result']
 
                 $('#cards-box').empty()
@@ -135,7 +135,7 @@
                     let profile = a['profile']
 
                     let temp_html = `
-                                    <div class="circle-img" onclick="globalThis.location.assign('/member/${index}')" style="background-image:url(${profile});">
+                                    <div class="circle-img" onclick="globalThis.location.assign('/view/${index}')" style="background-image:url(${profile});">
                                         <h1 class="name"><span id="name">${name}</span></h1>
                                     </div>
                                     `
@@ -143,7 +143,6 @@
                     $('#cards-box').append(temp_html)
                 })
             })
-            console.log(rows);
         }
 
         function posting() {
@@ -163,7 +162,7 @@
             formData.append("blog_give", blog)
             formData.append("desc_give", desc)
 
-            fetch('/api/member', { method: "POST", body: formData }).then(res => res.json()).then(data => {
+            fetch('/member', { method: "POST", body: formData }).then(res => res.json()).then(data => {
                 alert(data['msg'])
                 window.location.reload()
             })
