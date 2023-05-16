@@ -1,127 +1,238 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
+    <title>일조 팀원소개 페이지</title>
 
-    <title>일조</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <style>
         * {
-            font-family: "Gowun Batang", serif;
-            color: white;
+            font-family: 'Gowun Dodum', sans-serif;
         }
 
-        body {
-            background-image: linear-gradient(0deg,
-                    rgba(0, 0, 0, 0.5),
-                    rgba(0, 0, 0, 0.5)),
-                url("https://cdn.aitimes.com/news/photo/202010/132592_129694_3139.jpg");
+        .mytitle {
+            width: 100%;
+            height: 350px;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/FRfFtvK2/teammates.png');
+            background-position: center;
+            background-size: contain;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile {
+            height: 800px;
+            width: 86%;
+            margin: 10px 8% 20px 8%;
+        }
+
+        .circle-img {
+            width: 385px;
+            min-height: 450px;
+            border-radius: 50%;
+            /* background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/pXjMHG2h/img4.png'); */
+            background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');
             background-position: center;
             background-size: cover;
+            position: relative;
+            display: flex;
+            float: left;
+            margin: 15px 10px 0 10px;
         }
 
-        h1 {
-            font-weight: bold;
+        .name {
+            text-align: center;
+            margin: 0 auto;
+            display: inline-block;
+            margin-top: 45%;
+            color: aliceblue;
+            opacity: 60%;
         }
 
-        .order {
-            width: 500px;
-            margin: 60px auto 0px auto;
-            padding-bottom: 60px;
+        .name>span:hover {
+            opacity: 100%;
+            font-weight: bolder;
         }
 
-        .mybtn {
-            width: 100%;
+        .mytitle>button {
+            width: 200px;
+            height: 50px;
+
+            background-color: transparent;
+            color: white;
+
+            border-radius: 50px;
+            border: 1px solid white;
+
+            margin-top: 10px;
         }
 
-        .order>table {
-            margin: 40px 0;
-            font-size: 18px;
+        .mytitle>button:hover {
+            border: 2px solid white;
         }
 
-        option {
-            color: black;
+        .mycomment {
+            color: gray;
         }
+
+        .mycards {
+            margin: 20px auto 0px auto;
+            width: 95%;
+            max-width: 1200px;
+        }
+
+        .mypost {
+            width: 95%;
+            max-width: 800px;
+            margin: 20px auto 0px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+            display: none;
+        }
+
+        .mybtns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+        }
+
+        .mybtns>button {
+            margin-right: 10px;
+        }
+
     </style>
     <script>
         $(document).ready(function () {
-            show_order();
+            listing();
         });
-        function show_order() {
-            fetch('/member').then((res) => res.json()).then((data) => {
-                let rows = data['result']
-                $('#profile').empty()
-                rows.forEach((a) => {
-                    let name = a['name']
-                    let blog = a['blog']
-                    let mbti = a['mbti']
-                    let id = a['_id']
+        function selecting(index) {
+            console.log(index);
+            windows.location.assign('/member/'+index);
+        }
 
-                    let temp_html = `<div class="profile">
-                                        <div><a href="/view/${id}">이름 : ${name}</a></h5></div>
-                                        <div> 블로그 주소 : ${blog}</div>
-                                        <div> MBTI : ${mbti}</div>
-                                    </div>`
-                    $('#profile').append(temp_html)
+        function listing() {
+            fetch('/api/member').then(res => res.json()).then(data => {
+                let rows = data['result']
+                
+                $('#cards-box').empty()
+
+                rows.forEach((a) => {
+                    let index = a['m_idx']
+                    let name = a['name']
+                    let profile = a['profile']
+
+                    let temp_html = `
+                                    <div class="circle-img" onclick="selecting(${index});">
+                                        <h1 class="name"><span id="name">${name}</span></h1>
+                                    </div>
+                                    `
+
+                    $('#cards-box').append(temp_html)
                 })
             })
+            console.log(rows);
         }
-        function save_order() {
-            let name = $('#name').val()
+
+        function posting() {
+            let name =$('#name').val()
+            let mbti =$('#mbti').val()
+            let merit =$('#merit').val()
+            let profile = $('#profile').val()
             let blog = $('#blog').val()
-            let mbti = $('#mbti').val()
+            let desc = $('#desc').val()
+            
 
-            let formData = new FormData();
+            let formData = new FormData()
             formData.append("name_give", name)
-            formData.append("blog_give", blog)
             formData.append("mbti_give", mbti)
+            formData.append("merit_give", merit)
+            formData.append("profile_give", profile)
+            formData.append("blog_give", blog)
+            formData.append("desc_give", desc)
 
-            fetch('/member', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-                alert(data["msg"]);
+            fetch('/api/member', { method: "POST", body: formData }).then(res => res.json()).then(data => {
+                alert(data['msg'])
                 window.location.reload()
-            });
+            })
+        }
+        function open_box() {
+            $('#post-box').show()
+        }
+        function close_box() {
+            $('#post-box').hide()
         }
     </script>
 </head>
 
 <body>
-    <div class="mask"></div>
-    <div class="order">
+    <div class="mytitle">
         <h1>일조</h1>
-        <div class="order-info">
-            <div class="input-group mb-3">
-                <span class="input-group-text">이름</span>
-                <input id="name" type="text" class="form-control" />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">블로그 주소</span>
-                <input id="blog" type="text" class="form-control" />
-            </div>
-            <div class="input-group mb-3">
-                <label class="input-group-text" for="size">MBTI</label>
-                <input id="mbti" type="text" class="form-control" />
-            </div>
-            <button onclick="save_order()" type="button" class="btn btn-warning mybtn">
-                저장하기
-            </button>
+        <h2>성장하기 위해 노력해나가는 코린이들</h2>
+        <h4>빠이링 넘치는 우리팀은 최고의 개발자가 되기 위해 달려갑니다.</h4>
+        <h4>팀의 약속: 서로 돕자!</h4>
+        <button onclick="open_box()">팀원 등록하기</button>
+    </div>
+    <div class="mypost" id="post-box">
+        <div class="form-floating mb-3">
+            <input id="name" type="text" class="form-control" placeholder="홍길동">
+            <label>이름</label>
         </div>
-        <div id="profile">
-            <div class="profile">
-                <div id="name">김갑돌</div>
-                <div id="mbti">ENFJ</div>
-                <div id="blog">https://spartacodingclub.kr/</div>
+        <div class="form-floating mb-3">
+            <input id="mbti" type="text" class="form-control" placeholder="ISTP">
+            <label>MBTI</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input id="merit" type="text" class="form-control" placeholder="호기심이 많아요!">
+            <label>장점</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input id="profile" type="url" class="form-control" placeholder="....jpg">
+            <label>프로필 이미지(URL)</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input id="blog" type="url" class="form-control" placeholder="http://tistory.com">
+            <label>블로그 주소</label>
+        </div>
+        <div class="form-floating">
+            <textarea id="desc" class="form-control" placeholder="Describe yourself!"></textarea>
+            <label for="floatingTextarea2">간단 소개(+협업스타일 설명)</label>
+        </div>
+        <div class="mybtns">
+            <button onclick="posting()" type="button" class="btn btn-dark">등록하기</button>
+            <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
+        </div>
+    </div>
+    <div class="profile">
+        <div class="profile_list" id="cards-box">
+            <div class="circle-img" onclick="selecting(1)">
+                <h1 class="name"><span id="name">홍길동</span></h1>
+            </div>
+            <div class="circle-img" onclick="selecting(2)">
+                <h1 class="name"><span id="name">손흥민</span></h1>
+            </div>
+            <div class="circle-img" onclick="selecting(3)">
+                <h1 class="name"><span id="name">봉준호</span></h1>
+            </div>
+            <div class="circle-img" onclick="selecting(4)">
+                <h1 class="name"><span id="name">제이팍</span></h1>
             </div>
         </div>
     </div>
