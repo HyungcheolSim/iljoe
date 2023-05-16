@@ -44,8 +44,8 @@
             width: 385px;
             min-height: 450px;
             border-radius: 50%;
-            /* background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/pXjMHG2h/img4.png'); */
-            background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');
+            /* background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/pXjMHG2h/img4.png'); 
+            background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');*/
             background-position: center;
             background-size: cover;
             position: relative;
@@ -140,7 +140,7 @@
                     let profile = a['profile']
 
                     let temp_html = `
-                                    <div class="circle-img" onclick="selecting(${index});">
+                                    <div class="circle-img" onclick="selecting(${index})" style="background-image:url(${profile});">
                                         <h1 class="name"><span id="name">${name}</span></h1>
                                     </div>
                                     `
@@ -222,16 +222,16 @@
     </div>
     <div class="profile">
         <div class="profile_list" id="cards-box">
-            <div class="circle-img" onclick="selecting(1)">
+            <div class="circle-img" onclick="selecting(100)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">홍길동</span></h1>
             </div>
-            <div class="circle-img" onclick="selecting(2)">
+            <div class="circle-img" onclick="selecting(200)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">손흥민</span></h1>
             </div>
-            <div class="circle-img" onclick="selecting(3)">
+            <div class="circle-img" onclick="selecting(300)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">봉준호</span></h1>
             </div>
-            <div class="circle-img" onclick="selecting(4)">
+            <div class="circle-img" onclick="selecting(400)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">제이팍</span></h1>
             </div>
         </div>
