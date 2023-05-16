@@ -1,37 +1,50 @@
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
-from bson.objectid import ObjectId
+import requests
+from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://sparta:test@cluster0.32ylit8.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbsparta
+client = MongoClient('mongodb+srv://sparta:test@cluster0.chtiogv.mongodb.net/?retryWrites=true&w=majority')
+db = client.dbProject
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route("/member", methods=["POST"])
-def member_post():
-    name_receive = request.form['name_give']
-    blog_receive = request.form['blog_give']
-    mbti_receive = request.form['mbti_give']
+@app.route("/movie", methods=["POST"])
+def movie_post():
+    url_receive = request.form['url_give']
+    comment_receive = request.form['comment_give']
+
+    headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get(url_receive,headers=headers)
+
+    soup = BeautifulSoup(data.text, 'html.parser')
+
+    ogtitle = soup.select_one('meta[property="og:title"]')['content']
+    ogimage = soup.select_one('meta[property="og:image"]')['content']
+    ogdesc = soup.select_one('meta[property="og:description"]')['content']
 
     doc = {
-        'name':name_receive,
-        'blog':blog_receive,
-        'mbti':mbti_receive
+        'title':ogtitle,
+        'desc':ogdesc,
+        'image':ogimage,
+        'comment':comment_receive
     }
-    db.members.insert_one(doc)
-    print(name_receive, blog_receive, mbti_receive)
+
+    db.sparta2.insert_one(doc)
 
 
-    return jsonify({'msg':'저장완료!'})
+    return jsonify({'msg':'저장 완료!'})
 
-@app.route("/member", methods=["GET"])
-def member_get():
-    all_members = list(db.members.find({}))
-    for member in all_members:
+@app.route("/movie", methods=["GET"])
+def movie_get():
+    all_movies = list(db.sparta2.find({},{'_id':False}))
+    return jsonify({'msg':'GET 연결 완료!'})
+
+if __name__ == '__main__':
+    app.run('0.0.0.0', port=5000, debug=True)
         member['_id'] = str(member['_id'])
     return jsonify({'result':all_members})
 
