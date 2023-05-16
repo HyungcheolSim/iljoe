@@ -117,30 +117,25 @@
         .mybtns>button {
             margin-right: 10px;
         }
-
     </style>
     <script>
         $(document).ready(function () {
             listing();
         });
-        function selecting(index) {
-            console.log(index);
-            windows.location.assign('/member/'+index);
-        }
 
         function listing() {
             fetch('/api/member').then(res => res.json()).then(data => {
                 let rows = data['result']
-                
+
                 $('#cards-box').empty()
 
                 rows.forEach((a) => {
-                    let index = a['m_idx']
+                    let index = a['_id']
                     let name = a['name']
                     let profile = a['profile']
 
                     let temp_html = `
-                                    <div class="circle-img" onclick="selecting(${index})" style="background-image:url(${profile});">
+                                    <div class="circle-img" onclick="globalThis.location.assign('/member/${index}')" style="background-image:url(${profile});">
                                         <h1 class="name"><span id="name">${name}</span></h1>
                                     </div>
                                     `
@@ -152,13 +147,13 @@
         }
 
         function posting() {
-            let name =$('#name').val()
-            let mbti =$('#mbti').val()
-            let merit =$('#merit').val()
+            let name = $('#name').val()
+            let mbti = $('#mbti').val()
+            let merit = $('#merit').val()
             let profile = $('#profile').val()
             let blog = $('#blog').val()
             let desc = $('#desc').val()
-            
+
 
             let formData = new FormData()
             formData.append("name_give", name)
@@ -222,16 +217,20 @@
     </div>
     <div class="profile">
         <div class="profile_list" id="cards-box">
-            <div class="circle-img" onclick="selecting(100)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
+            <div class="circle-img" onclick="selecting(100)"
+                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">홍길동</span></h1>
             </div>
-            <div class="circle-img" onclick="selecting(200)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
+            <div class="circle-img" onclick="selecting(200)"
+                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">손흥민</span></h1>
             </div>
-            <div class="circle-img" onclick="selecting(300)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
+            <div class="circle-img" onclick="selecting(300)"
+                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">봉준호</span></h1>
             </div>
-            <div class="circle-img" onclick="selecting(400)" style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
+            <div class="circle-img" onclick="selecting(400)"
+                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
                 <h1 class="name"><span id="name">제이팍</span></h1>
             </div>
         </div>
