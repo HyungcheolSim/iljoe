@@ -12,7 +12,7 @@ def home():
     return render_template('index.html')
 
 @app.route("/member", methods=["POST"])
-def list_post():
+def main_post():
     mbti_receive = request.form['mbti_give']
     merit_receive = request.form['merit_give']
     blog_receive = request.form['blog_give']
@@ -25,7 +25,7 @@ def list_post():
         'desc':desc_receive
     }
 
-    db.members.insert_one(doc)
+    db.main.insert_one(doc)
     print(blog_receive, mbti_receive, merit_receive, desc_receive)
 
 @app.route("/api/member", methods=["POST"])
@@ -40,7 +40,7 @@ def member_post():
         'profile':profile_receive
     }
 
-    db.lists.insert_one(doc)
+    db.members.insert_one(doc)
     print(index_receive, name_receive, profile_receive)
 
     return jsonify({'msg':'저장완료!'})
@@ -60,8 +60,8 @@ def one_find_member(id):
     return render_template('view.html', member=find_member, member_id=find_id)
 
 @app.route("/api/member", methods=["GET"])
-def listing_get():
-    all_lists = list(db.lists.find({},{'_id':False}))
+def main_get():
+    all_lists = list(db.main.find({},{'_id':False}))
     return jsonify({'msg':'전송완료'})
 
 
