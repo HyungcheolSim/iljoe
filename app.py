@@ -1,83 +1,56 @@
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request, jsonify
+import random
 app = Flask(__name__)
 
 from bson.objectid import ObjectId
-
+import certifi
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://sparta:test@cluster0.32ylit8.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbsparta
+ca = certifi.where()
+
+client = MongoClient('mongodb+srv://Jacksoon:test@cluster1.bv8ib2u.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+db = client.temp
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route("/member", methods=["POST"])
-def member_post():
-    name_receive = request.form['name_give']
-    blog_receive = request.form['blog_give']
-    mbti_receive = request.form['mbti_give']
-    img_receive = request.form['img_give']
-    desc_receive = request.form['desc_give']
-    merit_receive = request.form['merit_give']
-
-    doc = {
-        'name':name_receive,
-        'blog':blog_receive,
-        'mbti':mbti_receive,
-        'img':img_receive,
-        'desc':desc_receive,
-        'merit':merit_receive
-    }
-    db.members.insert_one(doc)
-
-    return jsonify({'msg':'저장완료!'})
 
 @app.route("/member", methods=["GET"])
 def member_get():
-    all_members = list(db.members.find({}))
-    for member in all_members:
-        member['_id'] = str(member['_id'])
-    return jsonify({'result':all_members})
+    all_members = list(db.users.find({}))
+    all_members[0]['_id'] = str(all_members[0]['_id'])
+    return jsonify({'result':all_members[0]})
 
+@app.route("/member/comment", methods=["POST"])
+def comment_seve():
+    comment_receive = request.form['comment']
+    id_receive = request.form['id']
+    comment_id=id_receive+str(random.random())
+    db.users.update_one({'_id':ObjectId(id_receive)}, {"$push":{"comments":[comment_receive,comment_id]}})
+    return jsonify({'msg':id_receive})
 
-#상세보기
-@app.route("/view/<id>", methods=["GET"])
-def one_find_member(id):
-    find_member = db.members.find_one({"_id": ObjectId(id)})
-    find_member['_id'] = str(find_member['_id'])
-    find_id = db.members.find_one({'_id' : ObjectId(id)},{'id':True})
-    return render_template('view.html', member=find_member, member_id=find_id)
+@app.route("/member/comment/delete", methods=["POST"])
+def comment_delete():
+    comment_id = request.form['comment_id']
+    id_receive = request.form['id']
 
-#수정
-@app.route("/update/<id>", methods=["GET"])
-def update_get(id):
-    find_member = db.members.find_one({"_id": ObjectId(id)})
-    find_member['_id'] = str(find_member['_id'])
-    find_id = db.members.find_one({'_id' : ObjectId(id)},{'id':True})
-    return render_template('update.html', member=find_member, member_id=find_id)
-
-@app.route("/update/<id>", methods=["POST"])
-def update_post(id):
-    name_receive = request.form['name_give']
-    blog_receive = request.form['blog_give']
-    mbti_receive = request.form['mbti_give']
-    img_receive = request.form['img_give']
-    desc_receive = request.form['desc_give']
-    merit_receive = request.form['merit_give']
-
-    find_member = db.members.find_one({"_id": ObjectId(id)})
-    find_member['_id'] = str(find_member['_id'])
-
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'name':name_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'blog':blog_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'mbti':mbti_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'img':img_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'desc':desc_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'merit':merit_receive}})
-
-    return redirect('/view/'+id)
-   
+    # db.users.update_one({} ,{ "$pull": { "comments": { "$elemMatch": {'1': comment_id}}}})
+    db.users.update_one({'_id':ObjectId(id_receive)},{"$pull":{"comments": { "$elemMatch": { "$in": [comment_id] }}}})
+    return jsonify({'msg':comment_id})
+@app.route("/member/comment/fix", methods=["POST"])
+def comment_fix():
+    fix_comment = request.form['fix_comment']
+    comment_id = request.form['comment_id']
+    len_comment = request.form['len_comment']
+    # a = list(db.users.find({'comments':{"$elemMatch": {"comments.$.1": 'comment_id'}}},{'comments'}))
+    for i in range(int(len_comment)):
+        a=list(db.users.find({f"comments.{i}.1":  comment_id}))
+        if len(a) !=0:
+            db.users.update_one({f"comments.{i}.1":comment_id},{"$set":{f"comments.{i}.0": fix_comment}})
+    # db.users.update_one({'comments':{ "$elemMatch": { "$in": [comment_id]}}},{"$set":{"comments": {"$elemMatch": {'comments.$.0': fix_comment}}}})
+    return jsonify({'msg':comment_id})
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5001, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)
+
 

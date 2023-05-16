@@ -1,236 +1,239 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
-    <title>일조 팀원소개 페이지</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .mytitle {
-            width: 100%;
-            height: 350px;
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/FRfFtvK2/teammates.png');
-            background-position: center;
-            background-size: contain;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .img {
-            height: 800px;
-            width: 86%;
-            margin: 10px 8% 20px 8%;
-        }
-
-        .circle-img {
-            width: 385px;
-            min-height: 450px;
-            border-radius: 50%;
-            /* background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.postimg.cc/pXjMHG2h/img4.png'); 
-            background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');*/
-            background-position: center;
-            background-size: cover;
-            position: relative;
-            display: flex;
-            float: left;
-            margin: 15px 10px 0 10px;
-        }
-
-        .name {
-            text-align: center;
-            margin: 0 auto;
-            display: inline-block;
-            margin-top: 45%;
-            color: yellowgreen;
-            opacity: 60%;
-        }
-
-        .name>span:hover {
-            opacity: 100%;
-            font-weight: bolder;
-        }
-
-        .mytitle>button {
-            width: 200px;
-            height: 50px;
-
-            background-color: transparent;
-            color: white;
-
-            border-radius: 50px;
-            border: 1px solid white;
-
-            margin-top: 10px;
-        }
-
-        .mytitle>button:hover {
-            border: 2px solid white;
-        }
-
-        .mycomment {
-            color: gray;
-        }
-
-        .mycards {
-            margin: 20px auto 0px auto;
-            width: 95%;
-            max-width: 1200px;
-        }
-
-        .mypost {
-            width: 95%;
-            max-width: 800px;
-            margin: 20px auto 0px auto;
-            padding: 20px;
-            box-shadow: 0px 0px 3px 0px gray;
-
-            display: none;
-        }
-
-        .mybtns {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-
-            margin-top: 20px;
-        }
-
-        .mybtns>button {
-            margin-right: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>recommend_movie</title> <!-- 제목 변경 -->
+    <link rel="stylesheet" href="static/main-style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
     <script>
         $(document).ready(function () {
-            listing();
+            $('#posts_a').empty()
+            show_order();
+
         });
-
-        function listing() {
-            fetch('/member').then(res => res.json()).then(data => {
+        function show_order() {
+        fetch('/member').then((res) => res.json()).then((data) => {
                 let rows = data['result']
-
-                $('#cards-box').empty()
-
-                rows.forEach((a) => {
-                    let index = a['_id']
-                    let name = a['name']
-                    let img = a['img']
-
-                    let temp_html = `
-                                    <div class="circle-img" onclick="globalThis.location.assign('/view/${index}')" style="background-image:url(${img});">
-                                        <h1 class="name"><span id="name">${name}</span></h1>
+                console.log(rows)
+                let blog_url = rows['blog_url']
+                let comment = rows['comment']
+                let mbti = rows['mbti']
+                let name = rows['name']
+                let _id = rows['_id']
+                let temp_html = `
+                                <div class="posts" id=posts_id>
+                                    <div class="post-id">
+                                        <div class="post-id-left">
+                                            <img class="post-id-photo" src="/static/r_img/pic.png" alt="">
+                                            <b>${_id}</b>
+                                        </div>
+                                        <hr class="line_s">
+                                        <div class="post-id-right">
+                                        </div>
                                     </div>
-                                    `
+                                    <div class="post-photo">
+                                        <img src="/static/r_img/pic.png" alt="">
+                                        <div class ="inner_text">
+                                            <br>이름:${name}</br>
+                                            <br>mbti:${mbti}</br>
+                                            <br><a href="${blog_url}">블로그</a></br>
+                                        </div>
+                                    </div>
+                                    <hr class="line_s">
+                                    <div class="inner_comment_box">
+                                        ${comment}                                        </div>
+                                    <div class="inner_button">
+                                        <button class="inner_buttons" type="button" id="button-addon2">수정</button>
+                                    </div>
+                                    <hr class="line_s">
+                                    <div class="post-comment-input">
+                                        <input type="text" class="form-control" placeholder="write comment"
+                                               aria-label="write comment" aria-describedby="button-addon2" id="comments">
+                                        <button class="btn-btn-outline-secondary" type="button" id="button-addon2" onclick="save_comment()">입력</button>
 
-                    $('#cards-box').append(temp_html)
+
+                                    </div>
+
+                                    <div class="post-comment" id=comment_append> <!-- 댓글-->
+                                        <p><b>이름:</b><span class="friends-comment">댓글</span> </p>
+                                        <p><b>이름:</b><span class="friends-comment">댓글</span></p>
+
+                                    </div>
+                                </div>`
+                $("#posts_a").append(temp_html)
+
+                if (Object.keys(rows).includes('comments')) {
+                    $('#comment_append').empty()
+                    for (let i = 0; i < rows['comments'].length; i++) {
+                            comment = rows['comments'][i][0]
+                            comment_id = rows['comments'][i][1]
+                            let temp_htmls = `
+                                            <p><b>ㅇㅇ</b><span class="friends-comment${i}">${comment} </span>
+                                            <button onclick="delete_comment('${comment_id}')">삭제</button>
+                                            <button class ="fix_comment${i}"onclick="update_comment(${i},'${comment_id}')">댓글 수정</button></p>
+                                            `
+                            $(`#comment_append`).append(temp_htmls)
+                }
+            }
+            });
+    }
+    function save_comment() {
+            fetch('/member').then((res) => res.json()).then((data) => {
+                let rows = data['result']
+                let _id = rows['_id']
+                let comment = $('.form-control').val()
+                let formData = new FormData();
+                formData.append("comment", comment);
+                formData.append("id", _id);
+                fetch('/member/comment', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                    location.reload()
+
                 })
             })
-        }
-
-        function posting() {
-            let name = $('#name').val()
-            let mbti = $('#mbti').val()
-            let merit = $('#merit').val()
-            let img = $('#img').val()
-            let blog = $('#blog').val()
-            let desc = $('#desc').val()
+        } // 코멘트 저장
 
 
-            let formData = new FormData()
-            formData.append("name_give", name)
-            formData.append("mbti_give", mbti)
-            formData.append("merit_give", merit)
-            formData.append("img_give", img)
-            formData.append("blog_give", blog)
-            formData.append("desc_give", desc)
-
-            fetch('/member', { method: "POST", body: formData }).then(res => res.json()).then(data => {
-                alert(data['msg'])
-                window.location.reload()
+    function delete_comment(comment_id){
+        fetch('/member').then((res) => res.json()).then((data) => {
+            let rows = data['result']
+            let _id = rows['_id']
+            let formData = new FormData();
+            formData.append("id", _id);
+            formData.append("comment_id", comment_id);
+            fetch('/member/comment/delete', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                location.reload()
             })
-        }
-        function open_box() {
-            $('#post-box').show()
-        }
-        function close_box() {
-            $('#post-box').hide()
-        }
+    })
+
+
+    } // 코멘트 삭제
+
+
+    function update_comment(i,comment_id){
+        $(`.friends-comment${i}`).empty()
+        $(`.fix_comment${i}`).empty()
+        // let a = comment_id.toString()
+        // console.log(typeof(a))
+        // console.log(a)
+        let temp_htmls = `
+            <input type="text" class="fix_comment_text${i}" style=width:70%;border-radius: 15px; placeholder="write comment"
+                    aria-label="write comment" aria-describedby="button-addon2" id="comments">
+        `
+        $(`.friends-comment${i}`).append(temp_htmls)
+        let temp_htmlss =
+        `
+        댓글 수정하기
+        `
+        $(`.fix_comment${i}`).append(temp_htmlss)
+        $(`.fix_comment${i}`).attr('onclick',"update_post("+`'${comment_id}'`+`,`+`${i}`+")")
+    } // 코멘트 수정
+
+    function update_post(comment_id,i){
+        let fix_comment = $(`.fix_comment_text${i}`).val()
+        let formData = new FormData();
+        fetch('/member').then((res) => res.json()).then((data) => {
+            let rows = data['result']
+            let comment = rows['comments'].length
+            // console.log(comment)
+            formData.append("comment_id", comment_id);
+            formData.append("fix_comment", fix_comment);
+            formData.append("len_comment", comment);
+            fetch('/member/comment/fix', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                location.reload()
+            })
+        })
+    } // 코멘트 수정
     </script>
 </head>
 
 <body>
-    <div class="mytitle">
-        <h1>일조</h1>
-        <h2>성장하기 위해 노력해나가는 코린이들</h2>
-        <h4>빠이링 넘치는 우리팀은 최고의 개발자가 되기 위해 달려갑니다.</h4>
-        <h4>팀의 약속: 서로 돕자!</h4>
-        <button onclick="open_box()">팀원 등록하기</button>
-    </div>
-    <div class="mypost" id="post-box">
-        <div class="form-floating mb-3">
-            <input id="name" type="text" class="form-control" placeholder="홍길동">
-            <label>이름</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input id="mbti" type="text" class="form-control" placeholder="ISTP">
-            <label>MBTI</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input id="merit" type="text" class="form-control" placeholder="호기심이 많아요!">
-            <label>장점</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input id="img" type="url" class="form-control" placeholder="....jpg">
-            <label>프로필 이미지(URL)</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input id="blog" type="url" class="form-control" placeholder="http://tistory.com">
-            <label>블로그 주소</label>
-        </div>
-        <div class="form-floating">
-            <textarea id="desc" class="form-control" placeholder="Describe yourself!"></textarea>
-            <label for="floatingTextarea2">간단 소개(+협업스타일 설명)</label>
-        </div>
-        <div class="mybtns">
-            <button onclick="posting()" type="button" class="btn btn-dark">등록하기</button>
-            <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
-        </div>
-    </div>
-    <div class="img">
-        <div class="img_list" id="cards-box">
-            <div class="circle-img" onclick="selecting(100)"
-                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
-                <h1 class="name"><span id="name">홍길동</span></h1>
+    <div id="body-container">
+        <div class="header-container desktop">
+            <div id="header-wrapper">
+                <div id="header-wrapper-left">
+                    <img class="logo_lmg" src="/static/r_img/home.png" alt="">
+                </div>
+                <div id="header-wrapper-center"> <!-- 카테고리 -->
+                </div>
+                <div id="header-wrapper-right">
+                    <div class="dropdown_home">
+                        <button class="dropbtn_home" onclick="location.href='/'">
+                            <img class="tap_img" img src="/static/r_img/home.png" alt="">
+
+                        </button>
+                    </div>
+                    <div class="dropdown_write">
+                        <button class="dropbtn_write" onclick="location.href='/write'">
+                            <img class="tap_img" img src="/static/r_img/write.png" alt="">
+                        </button>
+                    </div>
+                    <div class="dropdown_platform">
+                        <button class="dropbtn_platform">
+
+                            <img class="tap_img" img src="/static/r_img/platform_tap.png" alt="">
+                        </button>
+                        <div class="dropdown-content_platform">
+                        </div>
+                    </div>
+                    <div class="dropdown_category">
+                        <button class="dropbtn_category">
+                            <img class="tap_img" img src="/static/r_img/category_tap.png" alt="">
+                        </button>
+                        <div class="dropdown-content_category">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="circle-img" onclick="selecting(200)"
-                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
-                <h1 class="name"><span id="name">손흥민</span></h1>
-            </div>
-            <div class="circle-img" onclick="selecting(300)"
-                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
-                <h1 class="name"><span id="name">봉준호</span></h1>
-            </div>
-            <div class="circle-img" onclick="selecting(400)"
-                style="background-image: url('https://i.postimg.cc/pXjMHG2h/img4.png');">
-                <h1 class="name"><span id="name">제이팍</span></h1>
+        </div>
+
+        <div class="content-container desktop">
+            <div id="content-wrapper-left">
+                <div class="content-post-wrapper" id="posts_a">
+                    <div class="posts" id=posts_id>
+                        <div class="post-id">
+                            <div class="post-id-left">
+                                <img class="post-id-photo" src="/static/r_img/pic.png" alt="">
+                                <b>이름</b>
+                            </div>
+                            <hr class="line_s">
+                            <div class="post-id-right">
+                            </div>
+                        </div>
+                        <div class="post-photo">
+                            <img src="/static/r_img/pic.png" alt="">
+                            <div class ="inner_text">
+                                <br>이름:~</br>
+                                <br>생년월일:~</br>
+                                <br>mbti:~</br>
+                                <br><a href="http://www.naver.com">블로그</a></br>
+                            </div>
+                        </div>
+                        <hr class="line_s">
+                        <div class="inner_comment_box">
+                            너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다너무재밌다
+                        </div>
+                        <div class="inner_button">
+                            <button class="inner_buttons" type="button" id="button-addon2">수정</button>
+                        </div>
+                        <hr class="line_s">
+                        <div class="post-comment-input">
+                            <input type="text" class="form-control" placeholder="write comment"
+                                aria-label="write comment" aria-describedby="button-addon2" id="comments">
+                            <button class="btn-btn-outline-secondary" type="button" id="button-addon2">입력</button>
+
+                        </div>
+
+                        <div class="post-comment" id=comment_append> <!-- 댓글-->
+                            <p><b>이름:</b><span class="friends-comment">댓글</span></p>
+                            <p><b>이름:</b><span class="friends-comment">댓글</span></p>
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

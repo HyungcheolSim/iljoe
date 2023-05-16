@@ -1,0 +1,565 @@
+* {
+    font-family: 'Poor Story', cursive;
+}
+
+body {
+        margin: 0;
+}
+
+@media (max-width: 1028px) {
+    .header-container.desktop {
+        display: none;
+    }
+    .content-container.desktop {
+        display: none;
+    }
+    .header-container .insta-logo {
+        width: 25%;
+    }
+    .header-container .header-items {
+        width: 10%;
+        margin: 0 1rem;
+    }
+    .content-story-wrapper {
+        background-color: rgb(243, 243, 243);
+
+        margin-top: 10.6%;
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        padding-left: 1vh;
+        padding-right: 1vh;
+
+        overflow: hidden;
+    }
+
+
+
+    .content-post-wrapper {
+        width: 100%;
+    }
+
+    .content-post-wrapper .posts {
+        border-top: 0.2rem solid rgb(214, 214, 214);
+
+    }
+
+    .content-post-wrapper .posts .post-id {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .content-post-wrapper .posts .post-id .post-id-left {
+        float: left;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        margin: 0.5rem 0 0.5rem 1.5rem;
+    }
+
+    .content-post-wrapper .posts .post-id .post-id-right {
+        float: right;
+        margin-right: 1.5rem;
+        margin-top: 1.2rem;
+    }
+
+    .content-post-wrapper .posts .post-photo > img {
+        width: 100%;
+        height: 70vh;
+    }
+
+
+    .post-like-msg-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        margin-left: 1rem;
+    }
+
+    .post-comment {
+        margin-top: 1rem;
+        margin-left: 1.5rem;
+    }
+    .post-comments{
+        margin-left: 1.5rem;
+    }
+
+
+    .friends-comment {
+        margin-left: 1.5rem;
+    }
+    #footer-container{
+        max-width: 992px;
+        width:100%;
+
+        bottom: 0;
+        position: fixed;
+        background-color: white;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        border-top: 0.2rem solid rgb(214, 214, 214);
+        padding: 1rem 0;
+    }
+    #footer-container .footer-items {
+        width: 5%;
+        margin: 0 1rem;
+    }
+}
+
+@media (min-width: 992px) {
+
+    body {
+        background-color: rgb(241, 241, 241);
+
+    }
+    #footer-container {
+        display: none;
+    }
+    .header-container.desktop{
+        top:0;
+        position:fixed;
+        width:100%;
+
+        display: flex;
+        justify-content: center;
+        border-bottom: 0.2rem solid rgb(214, 214, 214);
+
+        background-color: white;
+    }
+
+    .content-container.desktop{ /* 메인페이지 크기 */
+        background-color: rgb(243, 243, 243);
+        /* margin-top: 150px; */
+        width:100%;
+        margin-top: 45px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        /*align-items: center;*/
+    }
+    /* 메인프레임  */
+    .content-container.desktop #content-wrapper-left{
+        width: 670px;
+        margin-top: 50px;
+    }
+    .content-container.desktop #content-wrapper-right{
+        width: 354px;
+    }
+    #content-wrapper-left .content-story-wrapper {
+        background-color: rgb(254, 254, 254);
+        border: 1px solid rgb(214, 214, 214);
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        padding-left: 1vh;
+        padding-right: 1vh;
+
+        overflow: hidden;
+    }
+
+    #content-wrapper-left .content-story-wrapper .story-items {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0.5rem;
+    }
+
+    #content-wrapper-left .content-story-wrapper .story-items .story-photos.read {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 0.5rem;
+
+        border-radius: 50%;
+        border: 0.2rem solid gray;
+    }
+
+    #content-wrapper-left .content-post-wrapper .posts {
+        margin-top: 20px;
+        border: 1px solid rgb(214, 214, 214);
+        background-color: rgb(223, 213, 213);
+    }
+
+    #content-wrapper-left .content-post-wrapper .posts .post-id {
+        display: inline-block;
+        width: 100%;
+    }
+
+    #content-wrapper-left .content-post-wrapper .posts .post-id .post-id-left {
+        float: left;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        margin: 0.5rem 0 0.5rem 1.5rem;
+    }
+
+    #content-wrapper-left .content-post-wrapper .posts .post-id .post-id-right {
+        float: right;
+        margin-right: 1.5rem;
+        margin-top: 1.2rem;
+    }
+
+    .content-post-wrapper .posts .post-photo{
+        width: 798px;
+        height: 300px;
+        margin: 0.5rem 0 0.5rem 1.5rem;
+        display: flex;
+    }
+    .content-post-wrapper .posts .post-photo .inner_text{
+        text-align: center;
+        margin-top: 15px;
+        width: 400px;
+
+    }
+    .content-post-wrapper .posts .post-photo > img {
+        width: 300px;
+        height: 250px;
+        border-radius : 50%;
+    }
+    .content-post-wrapper .posts .inner_comment_box{
+        width: 600px;
+        height: 150px;
+        margin-left: 25px;
+        margin-top: 20px;
+        overflow:hidden;
+        word-wrap:break-word;
+    }
+
+    .content-post-wrapper .posts .post-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .line_s{
+        width: 590px;
+        margin-left: 30px;
+        background: linear-gradient(to left, transparent, rgba(255,0,0,1), transparent);
+    }
+    .content-post-wrapper .posts .post-buttons .post-buttons-left {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-left: 1rem;
+    }
+    .inner_button{
+        width: 630px;
+    }
+    .inner_button .inner_buttons{
+
+        margin-bottom: 10px;
+        float:right;
+    }
+    .content-post-wrapper .posts .post-buttons .post-buttons-left > img {
+        margin: 0.5rem;
+        width: 25px;
+    }
+
+    .content-post-wrapper .posts .post-buttons .post-buttons-right {
+        display: flex;
+        justify-content: right;
+        width: 100%;
+        margin-right: 1rem;
+    }
+
+    .content-post-wrapper .posts .post-buttons .post-buttons-right > img {
+        margin: 0.5rem;
+        width: 25px;
+    }
+
+
+}
+
+.header-container.desktop #header-wrapper {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem 0;
+    width: 1500px;
+}
+.header-container.desktop #header-wrapper-left{
+    width: 100%;
+    align-items: center;
+    margin-left: 150px;
+}
+.header-container.desktop #header-wrapper-left .logo_lmg {
+    width: 50px;
+}
+.header-container.desktop #header-wrapper-center{
+    width: 100%;
+    text-align: center;
+}
+.header-container.desktop #header-wrapper-right{
+    width: 1500px;
+    margin-left: 980px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+.header-container.desktop #header-wrapper-right .header-items{
+    width: 250px;
+    margin-right: 16px;
+}
+
+
+.post-id-photo {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.7rem;
+    border-radius: 50%;
+}
+
+.post-like-msg-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.post-comment {
+    margin-top: 1rem;
+    margin-left: 1.5rem;
+}
+
+.friends-comment {
+    margin-left: 1.5rem;
+}
+.post-comments{
+    margin-left: 1.5rem;
+}
+.post-add{
+    margin-top: 1rem;
+    margin-left: 1.5rem;
+}
+.post-comment-input{
+    margin-left: 1.5rem;
+    margin-top: 5px;
+}
+.post-comment-input .form-control{
+    width: 85%;
+    height: 32px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233, 233, 233);
+
+}
+
+/* .post-comment-input .btn-btn-outline-secondary{
+    position:relative;
+    background-color:#0a0a23;
+    color: #fff;
+    border: none
+
+} */
+
+/* 버튼 */
+/* .posts .post-comment-input .btn-btn-outline-secondary {
+    background-color: #e74c3c;
+    top: -3px;
+    box-shadow: 0 0 0 1px #c63702 inset,
+          0 0 0 2px rgba(255,255,255,0.15) inset,
+          0 8px 0 0 #C24032,
+          0 8px 0 1px rgba(0,0,0,0.4),
+          0 8px 8px 1px rgba(0,0,0,0.5);
+  }
+.posts .post-comment-input .btn-btn-outline-secondary:active {
+box-shadow: 0 0 0 1px #c63702 inset,
+        0 0 0 2px rgba(255,255,255,0.15) inset,
+        0 0 0 1px rgba(0,0,0,0.4);
+} */
+
+
+/* 탭 */
+.tap_img{
+    width: 40%;
+}
+/* 홈 */
+.dropdown_home{
+    position : relative;
+    display : inline-block;
+  }
+
+
+.dropbtn_home{
+border : 1px solid rgb(37, 37, 37);
+border-radius : 4px;
+background-color: #f5f5f5;
+font-weight: 400;
+color : rgb(37, 37, 37);
+padding : 12px;
+width :100px;
+text-align: center;
+cursor : pointer;
+font-size : 12px;
+border: none;
+margin-right: 5px;
+
+}
+
+/* 글쓰기 */
+.dropdown_write{
+    position : relative;
+    display : inline-block;
+  }
+
+.dropbtn_write{
+border : 1px solid rgb(37, 37, 37);
+border-radius : 4px;
+background-color: #f5f5f5;
+font-weight: 400;
+color : rgb(37, 37, 37);
+padding : 12px;
+width :100px;
+text-align: center;
+cursor : pointer;
+font-size : 12px;
+border: none;
+margin-right: 5px;
+}
+
+/*플랫폼*/
+.dropdown_platform{
+    position : relative;
+    display : inline-block;
+
+  }
+
+.dropbtn_platform{
+border : 1px solid rgb(37, 37, 37);
+border-radius : 4px;
+background-color: #f5f5f5;
+font-weight: 400;
+color : rgb(37, 37, 37);
+padding : 12px;
+width :100px;
+text-align: center;
+cursor : pointer;
+font-size : 12px;
+border: none;
+margin-right: 5px;
+}
+.dropdown-content_platform{
+display : none;
+position : absolute;
+z-index : 1; /*다른 요소들보다 앞에 배치*/
+font-weight: 400;
+background-color: #f9f9f9;
+min-width : 200px;
+}
+
+.dropdown-content_platform a{
+display : block;
+text-decoration : none;
+color : rgb(37, 37, 37);
+font-size: 12px;
+padding : 12px 20px;
+}
+
+.dropdown-content_platform a:hover{
+background-color : #ececec
+}
+
+.dropdown_platform:hover .dropdown-content_platform {
+display: block;
+}
+
+/*카테고리*/
+.dropdown_category{
+    position : relative;
+    display : inline-block;
+  }
+
+.dropbtn_category{
+border : 1px solid rgb(37, 37, 37);
+border-radius : 4px;
+background-color: #f5f5f5;
+font-weight: 400;
+color : rgb(37, 37, 37);
+padding : 12px;
+width :100px;
+text-align: center;
+cursor : pointer;
+font-size : 12px;
+border: none;
+margin-right: 5px;
+}
+.dropdown-content_category{
+display : none;
+position : absolute;
+z-index : 1; /*다른 요소들보다 앞에 배치*/
+font-weight: 400;
+background-color: #f9f9f9;
+min-width : 200px;
+}
+
+.dropdown-content_category a{
+display : block;
+text-decoration : none;
+color : rgb(37, 37, 37);
+font-size: 12px;
+padding : 12px 20px;
+}
+
+.dropdown-content_category a:hover{
+background-color : #ececec
+}
+
+.dropdown_category:hover .dropdown-content_category {
+display: block;
+}
+/* 탭 */
+.form-group{
+    width: 95%;
+    margin-left: 15px;
+}
+
+.posts  .btn-btn-outline-third {
+    background-color: #e74c3c;
+    top: -3px;
+    box-shadow: 0 0 0 1px #c63702 inset,
+          0 0 0 2px rgba(255,255,255,0.15) inset,
+          0 8px 0 0 #C24032,
+          0 8px 0 1px rgba(0,0,0,0.4),
+          0 8px 8px 1px rgba(0,0,0,0.5);
+    float: right;
+    margin-right: 15px;
+    margin-top: 5px;
+  }
+.posts .btn-btn-outline-third:active {
+box-shadow: 0 0 0 1px #c63702 inset,
+        0 0 0 2px rgba(255,255,255,0.15) inset,
+        0 0 0 1px rgba(0,0,0,0.4);
+}
+
+
+
+
+
+
+#file {
+    display: none;
+}
+
+b {
+    font-weight: 900;
+}
