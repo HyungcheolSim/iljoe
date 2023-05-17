@@ -85,12 +85,8 @@ def update_post(id):
 #삭제
 @app.route('/api/member/<id>', methods=['DELETE'])
 def delete_post(id):
-    del_member = db.members.find_one_and_delete({"_id": ObjectId(id)})
-
-    if del_member:
-        return jsonify({'msg':'삭제가 완료되었습니다..'})
-    else:
-        return jsonify({'msg':'팀원 조회가 되지 않습니다.'})
+    db.members.find_one_and_delete({"_id": ObjectId(id)})
+    return jsonify({'msg':'삭제 완료'})
 
 
 @app.route('/api/reply/', methods=['POST'])# 댓글입력
