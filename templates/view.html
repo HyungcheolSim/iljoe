@@ -12,150 +12,84 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <style>
-        body {
-            margin-top: 20px;
-            background-color: #f8f9fa;
-        }
-
-        .card-style1 {
-            box-shadow: 0px 0px 10px 0px rgb(89 75 128 / 9%);
-        }
-
-        .border-0 {
-            border: 0 !important;
-        }
-
-        .card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #fff;
-            background-clip: border-box;
-            border: 1px solid rgba(0, 0, 0, .125);
-            border-radius: 0.25rem;
-        }
-
-        section {
-            padding: 120px 0;
-            overflow: hidden;
-            background: #fff;
-        }
-
-        .mb-2-3,
-        .my-2-3 {
-            margin-bottom: 2.3rem;
-        }
-
-        .section-title {
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .text-primary {
-            color: #ceaa4d !important;
-        }
-
-        .text-secondary {
-            color: #15395A !important;
-        }
-
-        .font-weight-600 {
-            font-weight: 600;
-        }
-
-        .display-26 {
-            font-size: 1.3rem;
-        }
-
-        @media screen and (min-width: 992px) {
-            .p-lg-7 {
-                padding: 4rem;
-            }
-        }
-
-        @media screen and (min-width: 768px) {
-            .p-md-6 {
-                padding: 3.5rem;
-            }
-        }
-
-        @media screen and (min-width: 576px) {
-            .p-sm-2-3 {
-                padding: 2.3rem;
-            }
-        }
-
-        .p-1-9 {
-            padding: 1.9rem;
-        }
-
-        .bg-secondary {
-            background: #15395A !important;
-        }
-
-        @media screen and (min-width: 576px) {
-
-            .pe-sm-6,
-            .px-sm-6 {
-                padding-right: 3.5rem;
-            }
-        }
-
-        @media screen and (min-width: 576px) {
-
-            .ps-sm-6,
-            .px-sm-6 {
-                padding-left: 3.5rem;
-            }
-        }
-
-        .pe-1-9,
-        .px-1-9 {
-            padding-right: 1.5rem;
-        }
-
-        .ps-1-9,
-        .px-1-9 {
-            padding-left: 1.5rem;
-        }
-
-        .pb-1-9,
-        .py-1-9 {
-            padding-bottom: 1.5rem;
-        }
-
-        .pt-1-9,
-        .py-1-9 {
-            padding-top: 1.5rem;
-        }
-
-        .mb-1-9,
-        .my-1-9 {
-            margin-bottom: 1rem;
-        }
-
-        @media (min-width: 992px) {
-            .d-lg-inline-block {
-                display: inline-block !important;
-            }
-        }
-
-        .rounded {
-            border-radius: 0.25rem !important;
-        }
-
-        .btn-secondary {
-
-            margin: 0.5rem;
-        }
     </style>
     <title>{{ member['name'] }}</title>
+    <script>
+        $(document).ready(function () { // 멤버에 코멘트가 있을시 불러오는 함수 출력
+            if ("{{ member }}".includes("comments")) {
+                $('#comment_append').empty()
+                show_comment()
+            }
+        })
+
+        function save_comment() { // 댓글 저장
+            let id = "{{ member_id['_id'] }}"
+            let comment = $('.form-control').val()
+            let formData = new FormData();
+            formData.append("comment", comment);
+            formData.append("id", id);
+            fetch('/api/reply/', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                location.reload()
+            })
+        }
+        function show_comment() { // 댓글 불러오기
+            let a = "{{ member_id['_id'] }}"
+            fetch('/api/reply/'+`${a}`+'').then(res => res.json()).then(data => {
+                let rows = data['result']
+                for (let i = 0; i < rows['comments'].length; i++) {
+                    comment = rows['comments'][i][0]
+                    comment_id = rows['comments'][i][1]
+                    let temp_htmls = `
+                                            <p><b>ㅇㅇ</b><span class="friends-comment${i}">${comment} </span>
+                                            <button onclick="delete_comment('${comment_id}')">삭제</button>
+                                            <button class ="fix_comment${i}"onclick="update_comment(${i},'${comment_id}')">댓글 수정</button></p>
+                                            `
+                    $(`#comment_append`).append(temp_htmls)
+                }
+            })
+        }
+        function delete_comment(comment_id) { // 댓글 삭제
+            let a = "{{ member_id['_id'] }}"
+            fetch('/api/reply/'+`${a}`+'').then(res => res.json()).then(data => {
+                let rows = data['result']
+                let formData = new FormData();
+                formData.append("comment_id", comment_id);
+                fetch('/api/reply/del/'+`${a}`+'', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                    location.reload()
+                })
+            })
+        }
+        function update_comment(i, comment_id) { // 코멘트 수정 -> 수정할 텍스트박스 불러오기
+            $(`.friends-comment${i}`).empty()
+            $(`.fix_comment${i}`).empty()
+            let temp_htmls = `
+            <input type="text" class="fix_comment_text${i}" style=width:70%;border-radius: 15px; placeholder="write comment"
+                    aria-label="write comment" aria-describedby="button-addon2" id="comments">
+                    `
+            $(`.friends-comment${i}`).append(temp_htmls)
+            let temp_htmlss =
+                                `
+                        댓글 수정하기
+                                `
+            $(`.fix_comment${i}`).append(temp_htmlss)
+            $(`.fix_comment${i}`).attr('onclick', "update_post(" + `'${comment_id}'` + `,` + `${i}` + ")")
+        }
+        function update_post(comment_id, i) { //코멘트 수정-> 수정하기
+            let fix_comment = $(`.fix_comment_text${i}`).val()
+            let formData = new FormData();
+            let a = "{{ member_id['_id'] }}"
+            fetch('/api/reply/'+`${a}`+'').then((res) => res.json()).then((data) => {
+                let rows = data['result']
+                let comment = rows['comments'].length
+                formData.append("comment_id", comment_id);
+                formData.append("fix_comment", fix_comment);
+                formData.append("len_comment", comment);
+                fetch('/api/reply/update/'+`${a}`+'', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                    location.reload()
+                })
+            })
+        }
+    </script>
 </head>
 
 <body>
@@ -175,7 +109,7 @@
                                     </div>
                                     <ul class="list-unstyled mb-1-9">
                                         <li class="mb-2 mb-xl-3 display-28"><span
-                                                class="display-26 text-secondary me-2 font-weight-600">MBTI : </span> {{
+                                                class="display-26 text-secondary me-2 font-weight-600">MBTI : </span>{{
                                             member['mbti'] }} </li>
                                         <li class="mb-2 mb-xl-3 display-28"><span
                                                 class="display-26 text-secondary me-2 font-weight-600">BLOG : </span> {{
@@ -190,18 +124,36 @@
                     </div>
                 </div>
                 <div class="col-lg-12 mb-4 mb-sm-5">
-                    <div class="desc">
-                        <span class="section-title text-primary mb-3 mb-sm-4">
-                            <h4>자기소개</h4>
-                        </span>
+                    <div>
+                        <span class="section-title text-primary mb-3 mb-sm-4">자기소개</span>
                         <p>{{ member['desc'] }}</p>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mybtns">
+                <div class="d-flex justify-content-end">
                     <a href="/update/{{ member_id['_id'] }}"><button class="btn btn-secondary">수정</button></a>
                     <button class="btn btn-secondary" onclick="location.href='/'">목록</button>
                 </div>
             </div>
+            <hr class="line_s">
+            <div class="post-comment-input">
+                <input type="text" style="width: 95%; display: inline-block; margin-bottom: 10px;" class="form-control"
+                    placeholder="write comment" aria-label="write comment" aria-describedby="button-addon2"
+                    id="comments">
+                <button class="btn-btn-outline-secondary"
+                    style="position:relative; border: none; float: right; height: 36px;" onclick=save_comment()
+                    type="button" id="button-addon2">
+                    입력
+                </button>
+            </div>
+            <div class="post-comment" id=comment_append>
+                <p><b>이름:</b><span class="friends-comment">댓글</span></p>
+                <p><b>이름:</b><span class="friends-comment">댓글</span></p>
+
+
+            </div>
+            <input type="hidden" class="{{ member_id['_id'] }}" id="ids">
+        </div>
+
         </div>
     </section>
 </body>
