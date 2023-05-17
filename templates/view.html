@@ -157,6 +157,11 @@
     </style>
     <title>{{ member['name'] }}</title>
     <script>
+        function deleteMember() {
+            fetch("/member/{{ member_id['_id'] }}", { method: "DELETE"}).then(res => res.json()).then((data) => {                
+                window.location.href = "http://localhost:5001/";
+            })
+        }
         $(document).ready(function () { // 멤버에 코멘트가 있을시 불러오는 함수 출력
             if ("{{ member }}".includes("comments")) {
                 $('#comment_append').empty()
@@ -276,6 +281,7 @@
                 <div class="d-flex justify-content-end mybtns">
                     <a href="/api/member/update/{{ member_id['_id'] }}"><button class="btn btn-secondary">수정</button></a>
                     <button class="btn btn-secondary" onclick="location.href='/'">목록</button>
+                    <button class="btn btn-secondary" onclick="deleteMember()">삭제</button>
                 </div>
             </div>
             <hr class="line_s">
