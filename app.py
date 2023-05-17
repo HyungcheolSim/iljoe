@@ -77,7 +77,7 @@ def update_post(id):
 
     return redirect('/view/'+id)
 
-#삭제
+#팀원 삭제
 @app.route('/member/<id>', methods=['DELETE'])
 def delete_post(id):    
     del_member = db.members.find_one_and_delete({"_id": ObjectId(id)})
