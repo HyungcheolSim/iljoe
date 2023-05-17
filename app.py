@@ -1,11 +1,16 @@
 from flask import Flask, render_template, request, jsonify, redirect
+import random
+
 app = Flask(__name__)
 
 from bson.objectid import ObjectId
+import certifi
+ca = certifi.where()
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://sparta:test@cluster0.32ylit8.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://sparta:test@cluster0.32ylit8.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
 db = client.dbsparta
+# print(list(db.members.find({})))
 
 @app.route('/')
 def home():
@@ -77,17 +82,47 @@ def update_post(id):
 
     return redirect('/view/'+id)
 
-#팀원 삭제
+#삭제
 @app.route('/member/<id>', methods=['DELETE'])
-def delete_post(id):    
+def delete_post(id):
     del_member = db.members.find_one_and_delete({"_id": ObjectId(id)})
 
     if del_member:
         return jsonify({'msg':'삭제가 완료되었습니다..'})
     else:
-        return jsonify({'msg':'팀원 조회가 되지 않습니다.'})               
-   
+        return jsonify({'msg':'팀원 조회가 되지 않습니다.'})
+
+
+@app.route('/api/reply/', methods=['POST'])# 댓글입력
+def input_comment():
+    comment_receive = request.form['comment']
+    id_receive = request.form['id']
+    comment_id=id_receive+str(random.random())
+    db.members.update_one({'_id':ObjectId(id_receive)}, {"$push":{"comments":[comment_receive,comment_id]}})
+    return jsonify({'msg':'저장완료!'})
+
+@app.route('/api/reply/<id>', methods=['GET']) # 댓글 출력
+def show_comment(id):
+    find_member = db.members.find_one({"_id": ObjectId(id)})
+    find_member['_id'] = str(find_member['_id'])
+    return jsonify({'result':find_member})
+
+@app.route('/api/reply/del/<id>', methods=['POST']) # 댓글삭제
+def del_comment(id):
+    comment_id = request.form['comment_id']
+    db.members.update_one({'_id':ObjectId(id)},{"$pull":{"comments": { "$elemMatch": { "$in": [comment_id] }}}})
+    return jsonify({'msg':comment_id})
+
+@app.route('/api/reply/update/<id>', methods=['POST']) # 댓글수정
+def update_comment(id):
+    fix_comment = request.form['fix_comment']
+    comment_id = request.form['comment_id']
+    len_comment = request.form['len_comment']
+    for i in range(int(len_comment)):
+        a=list(db.members.find({f"comments.{i}.1":  comment_id}))
+        if len(a) !=0:
+            db.members.update_one({f"comments.{i}.1":comment_id},{"$set":{f"comments.{i}.0": fix_comment}})
+    return jsonify({'msg':'comment_id'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5001, debug=True)
-
