@@ -158,7 +158,7 @@
     <title>{{ member['name'] }}</title>
     <script>
         function deleteMember() {
-            fetch("/member/{{ member_id['_id'] }}", { method: "DELETE"}).then(res => res.json()).then((data) => {                
+            fetch("/api/member/{{ member_id['_id'] }}", { method: "DELETE"}).then(res => res.json()).then((data) => {                
                 window.location.href = "http://localhost:5001/";
             })
         }
