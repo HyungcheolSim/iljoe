@@ -27,7 +27,7 @@
 
 <body>
     <div class="container">
-        <form action="/update/{{ member['_id'] }}" method="post">
+        <form action="/api/member/update/{{ member['_id'] }}" method="post">
             <div class>
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="size">사진</label>
@@ -56,7 +56,7 @@
             </div>
             <div class="d-flex justify-content-around">
                 <button type="submit" class="btn btn-light">수정</button>
-                <a href="/view/{{ member_id['_id'] }}"><button class="btn btn-light">취소</button></a>
+                <a href="/api/member/{{ member_id['_id'] }}"><button class="btn btn-light">취소</button></a>
             </div>
 
         </form>

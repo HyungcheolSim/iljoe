@@ -16,7 +16,7 @@ db = client.dbsparta
 def home():
     return render_template('index.html')
 
-@app.route("/member", methods=["POST"])
+@app.route("/api/member", methods=["POST"])
 def member_post():
     name_receive = request.form['name_give']
     blog_receive = request.form['blog_give']
@@ -37,7 +37,7 @@ def member_post():
 
     return jsonify({'msg':'저장완료!'})
 
-@app.route("/member", methods=["GET"])
+@app.route("/api/member", methods=["GET"])
 def member_get():
     all_members = list(db.members.find({}))
     for member in all_members:
@@ -46,7 +46,7 @@ def member_get():
 
 
 #상세보기
-@app.route("/view/<id>", methods=["GET"])
+@app.route("/api/member/<id>", methods=["GET"])
 def one_find_member(id):
     find_member = db.members.find_one({"_id": ObjectId(id)})
     find_member['_id'] = str(find_member['_id'])
@@ -54,14 +54,14 @@ def one_find_member(id):
     return render_template('view.html', member=find_member, member_id=find_id)
 
 #수정
-@app.route("/update/<id>", methods=["GET"])
+@app.route("/api/member/update/<id>", methods=["GET"])
 def update_get(id):
     find_member = db.members.find_one({"_id": ObjectId(id)})
     find_member['_id'] = str(find_member['_id'])
     find_id = db.members.find_one({'_id' : ObjectId(id)},{'id':True})
     return render_template('update.html', member=find_member, member_id=find_id)
 
-@app.route("/update/<id>", methods=["POST"])
+@app.route("/api/member/update/<id>", methods=["POST"])
 def update_post(id):
     name_receive = request.form['name_give']
     blog_receive = request.form['blog_give']
@@ -80,10 +80,10 @@ def update_post(id):
     db.members.update_one({'_id': ObjectId(id)},{'$set':{'desc':desc_receive}})
     db.members.update_one({'_id': ObjectId(id)},{'$set':{'merit':merit_receive}})
 
-    return redirect('/view/'+id)
+    return redirect('/api/member/'+id)
 
 #삭제
-@app.route('/member/<id>', methods=['DELETE'])
+@app.route('/api/member/<id>', methods=['DELETE'])
 def delete_post(id):
     del_member = db.members.find_one_and_delete({"_id": ObjectId(id)})
 

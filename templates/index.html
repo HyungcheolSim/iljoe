@@ -125,7 +125,7 @@
         });
 
         function listing() {
-            fetch('/member').then(res => res.json()).then(data => {
+            fetch('/api/member').then(res => res.json()).then(data => {
                 let rows = data['result']
 
                 $('#cards-box').empty()
@@ -136,7 +136,7 @@
                     let img = a['img']
 
                     let temp_html = `
-                                    <div class="circle-img" onclick="globalThis.location.assign('/view/${index}')" style="background-image:url(${img});">
+                                    <div class="circle-img" onclick="globalThis.location.assign('/api/member/${index}')" style="background-image:url(${img});">
                                         <h1 class="name"><span id="name">${name}</span></h1>
                                     </div>
                                     `
@@ -163,7 +163,7 @@
             formData.append("blog_give", blog)
             formData.append("desc_give", desc)
 
-            fetch('/member', { method: "POST", body: formData }).then(res => res.json()).then(data => {
+            fetch('/api/member', { method: "POST", body: formData }).then(res => res.json()).then(data => {
                 alert(data['msg'])
                 window.location.reload()
             })
