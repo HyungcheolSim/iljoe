@@ -23,43 +23,63 @@
             padding: 4rem;
         }
     </style>
+        <script>
+            function updating() {
+                let name = $('#name_give').val()
+                let mbti = $('#mbti_give').val()
+                let merit = $('#merit_give').val()
+                let img = $('#img_give').val()
+                let blog = $('#blog_give').val()
+                let desc = $('#desc_give').val()
+    
+                let formData = new FormData()
+                formData.append("name_give", name)
+                formData.append("mbti_give", mbti)
+                formData.append("merit_give", merit)
+                formData.append("img_give", img)
+                formData.append("blog_give", blog)
+                formData.append("desc_give", desc)
+    
+                fetch("/api/member/{{ member_id['_id'] }}", { method: "PUT", body: formData }).then(res => res.json()).then(data => {
+                    location.href="/api/member/{{ member_id['_id'] }}";
+                })
+            }
+        </script>
 </head>
 
 <body>
     <div class="container">
-        <form action="/api/member/update/{{ member['_id'] }}" method="post">
-            <div class>
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="size">사진</label>
-                    <input name="img_give" value="{{ member['img'] }}" type="url" class="form-control" />
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">이름</span>
-                    <input name="name_give" value="{{ member['name']}}" class="form-control" />
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">블로그 주소</span>
-                    <input name="blog_give" value="{{ member['blog']}}" class="form-control" />
-                </div>
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="size">MBTI</label>
-                    <input name="mbti_give" value="{{ member['mbti']}}" type="text" class="form-control" />
-                </div>
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="size">장점</label>
-                    <input name="merit_give" value="{{ member['merit']}}" type="text" class="form-control" />
-                </div>
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="size">자기소개</label>
-                    <input name="desc_give" value="{{ member['desc']}}" type="text" class="form-control" />
-                </div>
+        <!--<form action="/api/member/update/{{ member['_id'] }}" method="post">-->
+        <div class>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="size">사진</label>
+                <input name="img_give" id="img_give" value="{{ member['img'] }}" type="url" class="form-control" />
             </div>
-            <div class="d-flex justify-content-around">
-                <button type="submit" class="btn btn-light">수정</button>
-                <a href="/api/member/{{ member_id['_id'] }}"><button class="btn btn-light">취소</button></a>
+            <div class="input-group mb-3">
+                <span class="input-group-text">이름</span>
+                <input name="name_give" id="name_give" value="{{ member['name']}}" class="form-control" />
             </div>
-
-        </form>
+            <div class="input-group mb-3">
+                <span class="input-group-text">블로그 주소</span>
+                <input name="blog_give" id="blog_give" value="{{ member['blog']}}" class="form-control" />
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="size">MBTI</label>
+                <input name="mbti_give" id="mbti_give" value="{{ member['mbti']}}" type="text" class="form-control" />
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="size">장점</label>
+                <input name="merit_give" id="merit_give" value="{{ member['merit']}}" type="text" class="form-control" />
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="size">자기소개</label>
+                <input name="desc_give" id="desc_give" value="{{ member['desc']}}" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="d-flex justify-content-around">
+            <button onclick="updating()" type="button" class="btn btn-dark">수정하기</button>
+            <a href="/api/member/{{ member_id['_id'] }}"><button class="btn btn-light">취소</button></a>
+        </div>
     </div>
 
 </body>

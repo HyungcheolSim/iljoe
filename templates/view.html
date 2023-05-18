@@ -158,9 +158,14 @@
     <title>{{ member['name'] }}</title>
     <script>
         function deleteMember() {
-            fetch("/api/member/{{ member_id['_id'] }}", { method: "DELETE"}).then(res => res.json()).then((data) => {                
-                window.location.href = "http://localhost:5001/";
-            })
+            if(confirm("정말 삭제하시겠습니까?")){
+                fetch("/api/member/{{ member_id['_id'] }}", { method: "DELETE"}).then(res => res.json()).then((data) => {                
+                window.location.href = "/";
+                })
+            }else{
+                location.reload();
+            }
+            
         }
         $(document).ready(function () { // 멤버에 코멘트가 있을시 불러오는 함수 출력
             if ("{{ member }}".includes("comments")) {

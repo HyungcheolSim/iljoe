@@ -8,7 +8,9 @@ import certifi
 ca = certifi.where()
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://sparta:test@cluster0.32ylit8.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
+#client = MongoClient('mongodb+srv://sparta:test@cluster0.32ylit8.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
+#형철 DB
+client = MongoClient('mongodb+srv://sparta:test@cluster0.ur3cecw.mongodb.net/test',tlsCAFile=ca)
 db = client.dbsparta
 # print(list(db.members.find({})))
 
@@ -16,6 +18,7 @@ db = client.dbsparta
 def home():
     return render_template('index.html')
 
+#팀원 등록
 @app.route("/api/member", methods=["POST"])
 def member_post():
     name_receive = request.form['name_give']
@@ -36,7 +39,7 @@ def member_post():
     db.members.insert_one(doc)
 
     return jsonify({'msg':'저장완료!'})
-
+#팀원 전체 조회
 @app.route("/api/member", methods=["GET"])
 def member_get():
     all_members = list(db.members.find({}))
@@ -53,7 +56,7 @@ def one_find_member(id):
     find_id = db.members.find_one({'_id' : ObjectId(id)},{'id':True})
     return render_template('view.html', member=find_member, member_id=find_id)
 
-#수정
+#수정페이지
 @app.route("/api/member/update/<id>", methods=["GET"])
 def update_get(id):
     find_member = db.members.find_one({"_id": ObjectId(id)})
@@ -61,7 +64,8 @@ def update_get(id):
     find_id = db.members.find_one({'_id' : ObjectId(id)},{'id':True})
     return render_template('update.html', member=find_member, member_id=find_id)
 
-@app.route("/api/member/update/<id>", methods=["POST"])
+#수정
+@app.route("/api/member/<id>", methods=["PUT"])
 def update_post(id):
     name_receive = request.form['name_give']
     blog_receive = request.form['blog_give']
@@ -70,17 +74,17 @@ def update_post(id):
     desc_receive = request.form['desc_give']
     merit_receive = request.form['merit_give']
 
-    find_member = db.members.find_one({"_id": ObjectId(id)})
-    find_member['_id'] = str(find_member['_id'])
+    doc = {
+        'name':name_receive,
+        'blog':blog_receive,
+        'mbti':mbti_receive,
+        'img':img_receive,
+        'merit':merit_receive,
+        'desc':desc_receive
+    }
+    db.members.update_one({"_id": ObjectId(id)},{"$set":doc});
 
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'name':name_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'blog':blog_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'mbti':mbti_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'img':img_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'desc':desc_receive}})
-    db.members.update_one({'_id': ObjectId(id)},{'$set':{'merit':merit_receive}})
-
-    return redirect('/api/member/'+id)
+    return jsonify({'msg':"업데이트 성공"})
 
 #삭제
 @app.route('/api/member/<id>', methods=['DELETE'])
