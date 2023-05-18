@@ -164,7 +164,7 @@
             formData.append("desc_give", desc)
 
             fetch('/api/member', { method: "POST", body: formData }).then(res => res.json()).then(data => {
-                alert(data['msg'])
+                console.log(data['msg'])
                 window.location.reload()
             })
         }
@@ -181,7 +181,7 @@
     <div class="mytitle">
         <h1>일조</h1>
         <h2>성장하기 위해 노력해나가는 코린이들</h2>
-        <h4>빠이링 넘치는 우리팀은 최고의 개발자가 되기 위해 달려갑니다.</h4>
+        <h4>빠이링 넘치는 우리팀은 성장할 수 있는 주니어 개발자가 되기 위해 달려갑니다.</h4>
         <h4>팀의 약속: 서로 돕자!</h4>
         <button onclick="open_box()">팀원 등록하기</button>
     </div>
